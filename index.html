@@ -104,9 +104,54 @@ body{
   text-transform:uppercase;
 }
 
-/* ── FILTER PILLS — hidden ── */
-#filter-bar{ display:none; }
-.fpill{ display:none; }
+/* ── FILTER PILLS ── */
+#filter-bar{
+  position:fixed;top:78px;left:50%;transform:translateX(-50%);
+  z-index:100;
+  display:flex;gap:8px;align-items:center;
+  max-width:95vw;overflow-x:auto;padding:6px 4px;
+  scrollbar-width:none;
+}
+#filter-bar::-webkit-scrollbar{display:none;}
+.fpill{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(0,0,0,0.45);
+  border:1.5px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.65);
+  padding:7px 16px;border-radius:30px;
+  font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;white-space:nowrap;
+  transition:all .25s;
+  font-family:'Barlow Condensed',sans-serif;
+  backdrop-filter:blur(6px);
+  user-select:none;
+}
+.fpill:hover{
+  background:rgba(45,181,74,0.25);
+  border-color:rgba(45,181,74,0.5);
+  color:#fff;
+  transform:translateY(-1px);
+}
+.fpill.active{
+  background:#2DB54A;
+  border-color:#2DB54A;
+  color:#fff;
+  box-shadow:0 4px 16px rgba(45,181,74,0.45);
+  transform:translateY(-1px);
+}
+.fpill .pill-icon{ font-size:15px; }
+.fpill .pill-count{
+  background:rgba(255,255,255,0.2);
+  border-radius:20px;
+  padding:1px 7px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0;
+  min-width:22px;text-align:center;
+}
+.fpill.active .pill-count{
+  background:rgba(0,0,0,0.2);
+}
 
 /* ── STAGE ── */
 #stage{
@@ -588,27 +633,105 @@ function buildTicker(){
   t.style.animationDuration = Math.max(35, all.length*3.5)+'s';
 }
 
-// ── FILTERS ───────────────────────────────────────────────────────────────
+// ── FILTERS ─────────────────────────────────────────────────────────────────
+const DEPT_ICONS = {
+  'conteúdo':       '✍️',
+  'content':        '✍️',
+  'técnico':        '⚙️',
+  'tecnico':        '⚙️',
+  'marketing':      '📣',
+  'links':          '🔗',
+  'analytics':      '📊',
+  'projetos':       '📋',
+  'comercial':      '💼',
+  'cx':             '🤝',
+  'tecnologia':     '💻',
+  'bi':             '📈',
+  'web analytics':  '📈',
+  'financeiro':     '💰',
+  'recursos humanos':'🏅',
+  'rh':             '🏅',
+  'administrativo': '🗂️',
+  'jurídico':       '⚖️',
+  'juridico':       '⚖️',
+  'inovação':       '💡',
+  'inovacao':       '💡',
+  'qualidade':      '✅',
+  'implantação':    '🚀',
+  'implantacao':    '🚀',
+  'assessoria':     '📌',
+  'earth':          '🌍',
+  'off page':       '🔗',
+  'sócio':          '🤝',
+  'socio':          '🤝',
+  'facilit':        '🏢',
+};
+
+function getDeptIcon(dept) {
+  const key = dept.toLowerCase().trim();
+  for (const k in DEPT_ICONS) {
+    if (key.includes(k)) return DEPT_ICONS[k];
+  }
+  return '⭐';
+}
+
 function buildFilters(){
   const bar = document.getElementById('filter-bar');
   bar.innerHTML = '';
-  const depts = [...new Set(all.map(p=>p.departamento))];
-  ['Todos',...depts].forEach(f=>{
+
+  // Count per dept
+  const counts = {};
+  all.forEach(p => {
+    counts[p.departamento] = (counts[p.departamento] || 0) + 1;
+  });
+
+  const depts = [...new Set(all.map(p => p.departamento))].sort();
+
+  // "Todos" pill first
+  const allPill = document.createElement('div');
+  allPill.className = 'fpill' + (activeFilter === 'Todos' ? ' active' : '');
+  allPill.innerHTML =
+    '<span class="pill-icon">🏆</span>' +
+    '<span>Todos</span>' +
+    '<span class="pill-count">' + all.length + '</span>';
+  allPill.onclick = () => setFilter('Todos');
+  bar.appendChild(allPill);
+
+  // Separator
+  const sep = document.createElement('div');
+  sep.style.cssText = 'width:1px;height:28px;background:rgba(255,255,255,0.15);flex-shrink:0;margin:0 4px;';
+  bar.appendChild(sep);
+
+  // Dept pills
+  depts.forEach(f => {
     const pill = document.createElement('div');
-    pill.className = 'fpill'+(f===activeFilter?' active':'');
-    pill.textContent = f;
-    pill.onclick = ()=>setFilter(f);
+    pill.className = 'fpill' + (f === activeFilter ? ' active' : '');
+    pill.innerHTML =
+      '<span class="pill-icon">' + getDeptIcon(f) + '</span>' +
+      '<span>' + f + '</span>' +
+      '<span class="pill-count">' + (counts[f] || 0) + '</span>';
+    pill.onclick = () => setFilter(f);
     bar.appendChild(pill);
   });
 }
 
 function setFilter(f){
   activeFilter = f;
-  document.querySelectorAll('.fpill').forEach(p=>p.classList.toggle('active',p.textContent===f));
-  filtered = f==='Todos' ? [...all] : all.filter(p=>p.departamento===f);
+  document.querySelectorAll('.fpill').forEach(p => {
+    // Match by text content (dept name is second span)
+    const label = p.querySelectorAll('span')[1];
+    const match = label && (
+      (f === 'Todos' && label.textContent === 'Todos') ||
+      label.textContent === f
+    );
+    p.classList.toggle('active', !!match);
+  });
+
+  filtered = f === 'Todos' ? [...all] : all.filter(p => p.departamento === f);
   cur = 0;
   render();
 }
+
 
 // ── LOAD DATA ─────────────────────────────────────────────────────────────
 async function loadSheet(url){
