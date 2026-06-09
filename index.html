@@ -134,11 +134,10 @@ body{
 .slot-hide{opacity:0;pointer-events:none;transform:translateX(900px) scale(.4);}
 
 /* ══════════════════════════════════════
-   FIGURINHA — fiel ao modelo
+   FIGURINHA
 ══════════════════════════════════════ */
 .figurinha{
-  width:240px;
-  height:348px;
+  width:240px;height:348px;
   border-radius:18px;
   position:relative;
   overflow:hidden;
@@ -147,162 +146,109 @@ body{
   font-family:'Barlow Condensed',sans-serif;
   flex-shrink:0;
 }
+/* Camadas por z-index:
+   1 = bg teal
+   2 = números 2026
+   3 = foto (cobre os números)
+   4 = bandeira, BRA, badge
+   5 = pílula nome
+   6 = barra dept
+*/
+.fig-bg{position:absolute;inset:0;background:#5BC8C8;z-index:1;}
 
-/* Fundo teal sólido */
-.fig-bg{position:absolute;inset:0;background:#5BC8C8;}
-
-/* Números do ano — coluna esquerda, verde, cortados */
 .fig-year{
-  position:absolute;
-  left:-18px;top:-8px;
+  position:absolute;left:-18px;top:-8px;
   display:flex;flex-direction:column;
-  line-height:.82;
-  z-index:1;
-  pointer-events:none;
+  line-height:.82;z-index:2;pointer-events:none;
 }
 .fig-year span{
-  font-family:'Anton',sans-serif;
-  font-size:112px;
-  color:#2DB54A;
-  display:block;
-  letter-spacing:-6px;
-  user-select:none;
+  font-family:'Anton',sans-serif;font-size:112px;
+  color:#2DB54A;display:block;letter-spacing:-6px;user-select:none;
 }
 
-/* Badge liveSEO — topo direita */
-.fig-fifa{
+.fig-photo{
   position:absolute;
-  top:10px;right:10px;
+  top:0;left:0;right:0;bottom:68px;
+  z-index:3;
+  overflow:hidden;
+  background:#5BC8C8;
+}
+.fig-photo img{
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  display:block;
+}
+.fig-initials{
+  width:100%;height:100%;
+  background:#5BC8C8;
+  display:flex;align-items:center;justify-content:center;
+}
+.fig-initials span{
+  font-family:'Anton',sans-serif;
+  font-size:62px;color:rgba(0,0,0,.1);
+}
+
+.fig-fifa{
+  position:absolute;top:10px;right:10px;
   width:58px;height:58px;
-  background:#000;
-  border-radius:12px;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:6px;
-  z-index:6;
+  background:#000;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  padding:6px;z-index:4;
   box-shadow:0 2px 8px rgba(0,0,0,.4);
 }
 .fig-fifa img{width:100%;height:100%;object-fit:contain;}
 .fig-fifa-txt{display:none;}
 
-/* Bandeira — direita meio */
-.fig-flag{
-  position:absolute;
-  right:11px;
-  bottom:130px;
-  z-index:6;
-}
+.fig-flag{position:absolute;right:11px;bottom:130px;z-index:4;}
 .fig-flag-circle{
-  width:42px;height:42px;
-  border-radius:50%;
-  overflow:hidden;
+  width:42px;height:42px;border-radius:50%;overflow:hidden;
   border:2px solid rgba(255,255,255,.6);
-  box-shadow:0 2px 8px rgba(0,0,0,.35);
-  background:#009c3b;
-  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.3);
 }
-/* SVG da bandeira do Brasil */
 .fig-flag-circle svg{width:42px;height:42px;}
 
-/* BRA letras outline — direita abaixo da bandeira */
 .fig-bra{
-  position:absolute;
-  right:12px;
-  bottom:60px;
-  z-index:6;
-  display:flex;flex-direction:column;
-  align-items:center;
-  gap:1px;
+  position:absolute;right:12px;bottom:72px;
+  z-index:4;
+  display:flex;flex-direction:column;align-items:center;gap:1px;
 }
 .fig-bra span{
-  font-family:'Anton',sans-serif;
-  font-size:26px;
+  font-family:'Anton',sans-serif;font-size:26px;
   color:transparent;
   -webkit-text-stroke:2px rgba(255,255,255,.55);
-  line-height:.9;
-  letter-spacing:1px;
+  line-height:.9;letter-spacing:1px;
 }
 
-/* Foto — centro, ocupa quase tudo */
-.fig-photo{
-  position:absolute;
-  bottom:68px;
-  left:0;right:0;
-  height:230px;
-  z-index:4;
-  display:flex;align-items:flex-end;justify-content:center;
-  overflow:hidden;
-  background:#5BC8C8;
-}
-.fig-photo img{
-  position:absolute;
-  top:0;left:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  object-position:center top;
-  z-index:2;
-}
-.fig-initials{
-  width:100%;height:100%;
-  background:linear-gradient(160deg,#2a7a44,#1a5230);
-  display:flex;align-items:center;justify-content:center;
-}
-.fig-initials span{
-  font-family:'Anton',sans-serif;
-  font-size:62px;color:rgba(255,255,255,.65);
-  letter-spacing:-2px;
-}
-
-/* Pílula nome — sobre a barra, centralizada */
 .fig-namepill{
-  position:absolute;
-  bottom:38px;
-  left:8px;right:58px;
+  position:absolute;bottom:38px;left:8px;right:58px;
   background:rgba(40,70,55,.82);
   backdrop-filter:blur(4px);
-  border-radius:12px;
-  padding:7px 12px 6px;
-  z-index:7;
+  border-radius:12px;padding:7px 12px 6px;z-index:5;
 }
 .fig-name{
-  font-family:'Oswald',sans-serif;
-  font-size:14.5px;font-weight:700;
-  color:#fff;
-  text-transform:uppercase;
-  letter-spacing:.4px;
-  line-height:1.1;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-family:'Oswald',sans-serif;font-size:14.5px;font-weight:700;
+  color:#fff;text-transform:uppercase;letter-spacing:.4px;
+  line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .fig-meta{
-  font-size:10.5px;
-  color:rgba(255,255,255,.78);
-  letter-spacing:.3px;
-  margin-top:2px;
+  font-size:10.5px;color:rgba(255,255,255,.78);
+  letter-spacing:.3px;margin-top:2px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 
-/* Barra dept — base do card */
 .fig-bottom{
-  position:absolute;
-  bottom:0;left:0;right:0;
-  height:36px;
-  background:#1e6b3a;
-  border-radius:0 0 18px 18px;
+  position:absolute;bottom:0;left:0;right:0;height:36px;
+  background:#1e6b3a;border-radius:0 0 18px 18px;
   display:flex;align-items:center;justify-content:center;
-  padding:0 12px;
-  z-index:7;
+  padding:0 12px;z-index:6;
 }
 .fig-dept{
-  font-family:'Oswald',sans-serif;
-  font-size:11px;font-weight:700;
-  color:#fff;
-  text-transform:uppercase;
-  letter-spacing:.8px;
+  font-family:'Oswald',sans-serif;font-size:11px;font-weight:700;
+  color:#fff;text-transform:uppercase;letter-spacing:.8px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   max-width:200px;
 }
-
-
 
 /* ── SPOTLIGHT ── */
 #spotlight{
@@ -546,52 +492,35 @@ const YEAR_DIGITS = ['2','0','2','6']; // 2026
 
 function initials(n){ return n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
 
-// ── BUILD FIGURINHA ───────────────────────────────────────────────────────
+// ── BUILD FIGURINHA ─────────────────────────────────────────────────────────
 function buildFig(p) {
   const el = document.createElement('div');
   el.className = 'figurinha';
 
-  // Photo or initials
-  let photoHTML;
-  if(p.foto_id && p.foto_id.trim()){
-    const imgSrc = CFG.prefix + p.foto_id.trim();
-    photoHTML = '<img src="' + imgSrc + '" alt="' + p.nome + '" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" />';
-  } else {
-    photoHTML = '<div class="fig-initials"><span>' + initials(p.nome) + '</span></div>';
-  }
+  const imgSrc = (p.foto_id && p.foto_id.trim())
+    ? CFG.prefix + p.foto_id.trim()
+    : '';
 
-  el.innerHTML = `
-    <div class="fig-bg"></div>
+  const photoContent = imgSrc
+    ? '<img src="' + imgSrc + '" alt="' + p.nome + '" />'
+    : '<div class="fig-initials"><span>' + initials(p.nome) + '</span></div>';
 
-    <div class="fig-year"><span>2</span><span>0</span><span>2</span><span>6</span></div>
+  el.innerHTML =
+    '<div class="fig-bg"></div>' +
+    '<div class="fig-year"><span>2</span><span>0</span><span>2</span><span>6</span></div>' +
+    '<div class="fig-photo">' + photoContent + '</div>' +
+    '<div class="fig-fifa">' + SVG_FIFA + '<span class="fig-fifa-txt"></span></div>' +
+    '<div class="fig-flag"><div class="fig-flag-circle">' + SVG_BR_FLAG + '</div></div>' +
+    '<div class="fig-bra"><span>B</span><span>R</span><span>A</span></div>' +
+    '<div class="fig-namepill">' +
+      '<div class="fig-name">' + p.nome + '</div>' +
+      '<div class="fig-meta">' + p.admissao + ' | liveSEO</div>' +
+    '</div>' +
+    '<div class="fig-bottom"><div class="fig-dept">' + p.departamento + '</div></div>';
 
-    <div class="fig-fifa">
-      ${SVG_FIFA}
-      <span class="fig-fifa-txt">FIFA</span>
-    </div>
-
-    <div class="fig-photo">${photoHTML}</div>
-
-    <div class="fig-flag">
-      <div class="fig-flag-circle">${SVG_BR_FLAG}</div>
-    </div>
-
-    <div class="fig-bra">
-      <span>B</span><span>R</span><span>A</span>
-    </div>
-
-    <div class="fig-namepill">
-      <div class="fig-name">${p.nome}</div>
-      <div class="fig-meta">${p.admissao} | liveSEO</div>
-    </div>
-
-    <div class="fig-bottom">
-      <div class="fig-dept">${p.departamento}</div>
-
-    </div>
-  `;
   return el;
 }
+
 
 // ── CAROUSEL ─────────────────────────────────────────────────────────────
 const SLOTS = ['slot-l3','slot-l2','slot-l1','slot-center','slot-r1','slot-r2','slot-r3'];
