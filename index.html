@@ -155,7 +155,9 @@ body{
 
 /* ── STAGE ── */
 #stage{
-  position:fixed;inset:0;
+  position:fixed;
+  top:0;left:0;right:0;
+  bottom:clamp(90px,9vh,130px);
   display:flex;align-items:center;justify-content:center;
   z-index:10;
   perspective:2000px;
@@ -363,7 +365,7 @@ body{
 .fig-bottom{
   position:absolute;bottom:0;left:0;right:0;
   height:clamp(28px, 10%, 52px);
-  background:#1e6b3a;border-radius:0 0 clamp(12px,1.5vw,22px) 0 0 clamp(12px,1.5vw,22px);
+  background:#1e6b3a;border-radius:0 0 clamp(12px,1.5vw,22px) clamp(12px,1.5vw,22px);
   display:flex;align-items:center;justify-content:center;
   padding:0 12px;z-index:6;
 }
@@ -377,26 +379,32 @@ body{
 /* ── SPOTLIGHT ── */
 #spotlight{
   position:fixed;
-  bottom:100px;left:50%;transform:translateX(-50%);
+  bottom:52px;left:50%;transform:translateX(-50%);
   text-align:center;z-index:50;pointer-events:none;
   transition:opacity .4s;
+  white-space:nowrap;
 }
 #sp-name{
   font-family:'Anton',sans-serif;
-  font-size:clamp(22px,2.8vw,52px);color:#fff;
+  font-size:clamp(16px,1.6vw,32px);
+  color:#fff;
   letter-spacing:3px;text-transform:uppercase;
-  text-shadow:0 2px 24px rgba(0,0,0,.85);
+  text-shadow:0 2px 12px rgba(0,0,0,1);
+  line-height:1.1;
 }
 #sp-dept{
-  font-size:clamp(11px,1.1vw,20px);letter-spacing:3px;
-  color:rgba(45,181,74,.9);
-  text-transform:uppercase;margin-top:4px;
+  font-size:clamp(10px,0.9vw,16px);
+  letter-spacing:3px;
+  color:#2DB54A;
+  text-transform:uppercase;
+  margin-top:2px;
+  text-shadow:0 1px 8px rgba(0,0,0,1);
 }
 
 /* ── DOTS ── */
 #dot-wrap{
-  position:fixed;bottom:62px;left:50%;transform:translateX(-50%);
-  display:flex;gap:6px;z-index:100;
+  position:fixed;bottom:38px;left:50%;transform:translateX(-50%);
+  display:flex;gap:5px;z-index:100;
 }
 .dind{
   width:6px;height:6px;border-radius:50%;
@@ -407,8 +415,8 @@ body{
 /* ── TICKER ── */
 #ticker{
   position:fixed;bottom:0;left:0;right:0;
-  height:44px;
-  background:rgba(0,0,0,.88);
+  height:36px;
+  background:rgba(0,0,0,.92);
   border-top:2px solid #2DB54A;
   z-index:100;overflow:hidden;
   display:flex;align-items:center;
