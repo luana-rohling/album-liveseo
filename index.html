@@ -472,8 +472,8 @@ body{
     <div class="hint">Arquivo → Publicar na web → Aba com colaboradores → Formato CSV → copiar link</div>
 
     <label>Prefixo URL das fotos (Google Drive)</label>
-    <input id="c-prefix" type="text" placeholder="https://drive.google.com/uc?export=view&id="/>
-    <div class="hint">O campo foto_id na planilha deve conter apenas o ID do arquivo no Drive (foto pública)</div>
+    <input id="c-prefix" type="text" placeholder="https://lh3.googleusercontent.com/d/"/>
+    <div class="hint">O campo foto_id na planilha deve conter apenas o ID do arquivo no Drive (foto pública). Prefixo: https://lh3.googleusercontent.com/d/</div>
 
     <label>Intervalo automático (segundos)</label>
     <input id="c-int" type="number" value="4" min="2" max="20"/>
@@ -521,7 +521,7 @@ const DEMO = [
 
 // ── STATE ─────────────────────────────────────────────────────────────────
 let all=[], filtered=[], cur=0, timer=null;
-let CFG = { url:'', prefix:'https://drive.google.com/uc?export=view&id=', interval:4 };
+let CFG = { url:'', prefix:'https://lh3.googleusercontent.com/d/', interval:4 };
 let activeFilter = 'Todos';
 
 // Year digits for left column decoration
