@@ -106,7 +106,7 @@ body{
 
 /* ── FILTER PILLS ── */
 #filter-bar{
-  position:fixed;top:78px;left:50%;transform:translateX(-50%);
+  position:fixed;top:76px;left:50%;transform:translateX(-50%);
   z-index:100;
   display:flex;gap:8px;align-items:center;
   max-width:95vw;overflow-x:auto;padding:6px 4px;
@@ -156,7 +156,8 @@ body{
 /* ── STAGE ── */
 #stage{
   position:fixed;
-  top:0;left:0;right:0;
+  top:130px; /* header ~78px + filter bar ~52px */
+  left:0;right:0;
   bottom:clamp(90px,9vh,130px);
   display:flex;align-items:center;justify-content:center;
   z-index:10;
