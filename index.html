@@ -104,61 +104,135 @@ body{
   text-transform:uppercase;
 }
 
-/* ── FILTER PILLS ── */
-#filter-bar{
-  position:fixed;top:76px;left:50%;transform:translateX(-50%);
-  z-index:100;
-  display:flex;gap:8px;align-items:center;
-  max-width:95vw;overflow-x:auto;padding:6px 4px;
-  scrollbar-width:none;
+/* ── FILTER MENU (side drawer) ── */
+#filter-bar{ display:none; } /* replaced by side menu */
+
+/* Toggle button */
+#menu-toggle{
+  position:fixed;top:50%;right:0;
+  transform:translateY(-50%);
+  z-index:200;
+  background:#2DB54A;
+  color:#fff;
+  border:none;
+  width:36px;
+  height:72px;
+  border-radius:10px 0 0 10px;
+  cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  box-shadow:-4px 0 16px rgba(0,0,0,0.5);
+  transition:background .2s;
 }
-#filter-bar::-webkit-scrollbar{display:none;}
-.fpill{
-  display:inline-flex;align-items:center;gap:7px;
-  background:rgba(0,0,0,0.45);
-  border:1.5px solid rgba(255,255,255,0.12);
-  color:rgba(255,255,255,0.65);
-  padding:7px 16px;border-radius:30px;
-  font-size:clamp(11px,1vw,16px);font-weight:600;letter-spacing:1px;text-transform:uppercase;
-  cursor:pointer;white-space:nowrap;
-  transition:all .25s;
-  font-family:'Barlow Condensed',sans-serif;
-  backdrop-filter:blur(6px);
+#menu-toggle:hover{ background:#38d15a; }
+#menu-toggle .bar{
+  width:16px;height:2px;background:#fff;border-radius:2px;transition:all .3s;
+}
+#menu-toggle.open .bar:nth-child(1){ transform:rotate(45deg) translate(4px,4px); }
+#menu-toggle.open .bar:nth-child(2){ opacity:0; }
+#menu-toggle.open .bar:nth-child(3){ transform:rotate(-45deg) translate(4px,-4px); }
+
+/* Side drawer */
+#side-menu{
+  position:fixed;top:0;right:-320px;
+  width:300px;height:100vh;
+  z-index:190;
+  background:rgba(5,14,7,0.96);
+  backdrop-filter:blur(16px);
+  border-left:1px solid rgba(45,181,74,0.25);
+  transition:right .35s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+  padding:0;
+  overflow:hidden;
+}
+#side-menu.open{ right:0; }
+
+.menu-header{
+  padding:24px 20px 16px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  flex-shrink:0;
+}
+.menu-title{
+  font-family:'Anton',sans-serif;
+  font-size:18px;letter-spacing:3px;
+  color:#2DB54A;text-transform:uppercase;
+}
+.menu-subtitle{
+  font-size:12px;color:rgba(255,255,255,0.35);
+  letter-spacing:1px;margin-top:4px;
+}
+
+.menu-list{
+  flex:1;overflow-y:auto;
+  padding:8px 0;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(45,181,74,0.3) transparent;
+}
+.menu-list::-webkit-scrollbar{width:3px;}
+.menu-list::-webkit-scrollbar-thumb{background:rgba(45,181,74,0.3);border-radius:2px;}
+
+.mitem{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 20px;
+  cursor:pointer;
+  transition:all .2s;
+  border-left:3px solid transparent;
   user-select:none;
 }
-.fpill:hover{
-  background:rgba(45,181,74,0.25);
-  border-color:rgba(45,181,74,0.5);
-  color:#fff;
-  transform:translateY(-1px);
+.mitem:hover{
+  background:rgba(45,181,74,0.1);
+  border-left-color:rgba(45,181,74,0.4);
 }
-.fpill.active{
-  background:#2DB54A;
-  border-color:#2DB54A;
-  color:#fff;
-  box-shadow:0 4px 16px rgba(45,181,74,0.45);
-  transform:translateY(-1px);
+.mitem.active{
+  background:rgba(45,181,74,0.15);
+  border-left-color:#2DB54A;
 }
-.fpill .pill-icon{ font-size:15px; }
-.fpill .pill-count{
-  background:rgba(255,255,255,0.2);
-  border-radius:20px;
-  padding:1px 7px;
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:0;
-  min-width:22px;text-align:center;
+.mitem-icon{ font-size:18px;width:24px;text-align:center;flex-shrink:0; }
+.mitem-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;font-weight:600;letter-spacing:1px;
+  text-transform:uppercase;color:rgba(255,255,255,0.7);
+  flex:1;
 }
-.fpill.active .pill-count{
-  background:rgba(0,0,0,0.2);
+.mitem.active .mitem-label{ color:#fff; }
+.mitem-count{
+  background:rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.6);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:700;
+  padding:2px 8px;border-radius:12px;
+  min-width:28px;text-align:center;
+  flex-shrink:0;
+}
+.mitem.active .mitem-count{
+  background:#2DB54A;color:#fff;
+}
+.menu-sep{
+  height:1px;background:rgba(255,255,255,0.06);
+  margin:6px 20px;
+}
+
+/* Active filter badge on toggle button */
+#menu-badge{
+  position:fixed;top:calc(50% - 36px);right:2px;
+  z-index:201;
+  background:#FFD700;color:#1a1a2e;
+  font-family:'Oswald',sans-serif;
+  font-size:10px;font-weight:700;
+  padding:2px 5px;border-radius:4px;
+  letter-spacing:.5px;
+  max-width:32px;
+  text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  display:none;
+  pointer-events:none;
 }
 
 /* ── STAGE ── */
 #stage{
   position:fixed;
-  top:160px; /* header ~78px + filter bar ~82px */
+  top:80px; /* just below header */
   left:0;right:0;
-  bottom:clamp(90px,9vh,130px);
+  bottom:clamp(80px,8vh,120px);
   display:flex;align-items:center;justify-content:center;
   z-index:10;
   perspective:2000px;
@@ -535,8 +609,22 @@ body{
   </div>
 </div>
 
-<!-- Filters -->
-<div id="filter-bar"></div>
+<!-- Side menu toggle -->
+<button id="menu-toggle" onclick="toggleMenu()" title="Filtrar por departamento">
+  <div class="bar"></div>
+  <div class="bar"></div>
+  <div class="bar"></div>
+</button>
+<div id="menu-badge"></div>
+
+<!-- Side menu -->
+<div id="side-menu">
+  <div class="menu-header">
+    <div class="menu-title">⚽ Departamentos</div>
+    <div class="menu-subtitle">Filtre por área</div>
+  </div>
+  <div class="menu-list" id="menu-list"></div>
+</div>
 
 <!-- Stage -->
 <div id="stage">
@@ -721,101 +809,109 @@ function buildTicker(){
   t.style.animationDuration = Math.max(35, all.length*3.5)+'s';
 }
 
-// ── FILTERS ─────────────────────────────────────────────────────────────────
+// ── FILTERS — side menu ─────────────────────────────────────────────────────
 const DEPT_ICONS = {
-  'conteúdo':       '✍️',
-  'content':        '✍️',
-  'técnico':        '⚙️',
-  'tecnico':        '⚙️',
-  'marketing':      '📣',
-  'links':          '🔗',
-  'analytics':      '📊',
-  'projetos':       '📋',
-  'comercial':      '💼',
-  'cx':             '🤝',
-  'tecnologia':     '💻',
-  'bi':             '📈',
-  'web analytics':  '📈',
-  'financeiro':     '💰',
-  'recursos humanos':'🏅',
-  'rh':             '🏅',
-  'administrativo': '🗂️',
-  'jurídico':       '⚖️',
-  'juridico':       '⚖️',
-  'inovação':       '💡',
-  'inovacao':       '💡',
-  'qualidade':      '✅',
-  'implantação':    '🚀',
-  'implantacao':    '🚀',
-  'assessoria':     '📌',
-  'earth':          '🌍',
-  'off page':       '🔗',
-  'sócio':          '🤝',
-  'socio':          '🤝',
-  'facilit':        '🏢',
+  'conteúdo':'✍️','content':'✍️','técnico':'⚙️','tecnico':'⚙️',
+  'marketing':'📣','links':'🔗','off page':'🔗','analytics':'📊',
+  'projetos':'📋','comercial':'💼','cx':'🤝','atendimento':'🤝',
+  'tecnologia':'💻','bi':'📈','web analytics':'📈','b.i':'📈',
+  'financeiro':'💰','recursos humanos':'🏅','rh':'🏅',
+  'administrativo':'🗂️','jurídico':'⚖️','juridico':'⚖️',
+  'inovação':'💡','inovacao':'💡','qualidade':'✅',
+  'implantação':'🚀','implantacao':'🚀','assessoria':'📌',
+  'earth':'🌍','sócio':'🤝','socio':'🤝','facilit':'🏢',
+  'auditoria':'🔍','ceo':'👑','diretoria':'👑',
 };
-
-function getDeptIcon(dept) {
-  const key = dept.toLowerCase().trim();
-  for (const k in DEPT_ICONS) {
-    if (key.includes(k)) return DEPT_ICONS[k];
-  }
+function getDeptIcon(dept){
+  const k = dept.toLowerCase().trim();
+  for(const key in DEPT_ICONS){ if(k.includes(key)) return DEPT_ICONS[key]; }
   return '⭐';
 }
 
+let menuOpen = false;
+
+function toggleMenu(){
+  menuOpen = !menuOpen;
+  document.getElementById('side-menu').classList.toggle('open', menuOpen);
+  document.getElementById('menu-toggle').classList.toggle('open', menuOpen);
+  if(menuOpen){ clearInterval(timer); } else { startAuto(); }
+}
+
+function closeMenu(){
+  menuOpen = false;
+  document.getElementById('side-menu').classList.remove('open');
+  document.getElementById('menu-toggle').classList.remove('open');
+  startAuto();
+}
+
+// Close menu clicking outside
+document.addEventListener('click', e => {
+  if(menuOpen &&
+     !e.target.closest('#side-menu') &&
+     !e.target.closest('#menu-toggle')){
+    closeMenu();
+  }
+});
+
 function buildFilters(){
-  const bar = document.getElementById('filter-bar');
-  bar.innerHTML = '';
+  const list = document.getElementById('menu-list');
+  if(!list) return;
+  list.innerHTML = '';
 
-  // Count per dept
   const counts = {};
-  all.forEach(p => {
-    counts[p.departamento] = (counts[p.departamento] || 0) + 1;
-  });
+  all.forEach(p => { counts[p.departamento] = (counts[p.departamento]||0)+1; });
+  const depts = [...new Set(all.map(p=>p.departamento))].sort();
 
-  const depts = [...new Set(all.map(p => p.departamento))].sort();
+  // Todos
+  const allItem = document.createElement('div');
+  allItem.className = 'mitem' + (activeFilter==='Todos'?' active':'');
+  allItem.innerHTML =
+    '<span class="mitem-icon">🏆</span>' +
+    '<span class="mitem-label">Todos</span>' +
+    '<span class="mitem-count">' + all.length + '</span>';
+  allItem.onclick = () => { setFilter('Todos'); closeMenu(); };
+  list.appendChild(allItem);
 
-  // "Todos" pill first
-  const allPill = document.createElement('div');
-  allPill.className = 'fpill' + (activeFilter === 'Todos' ? ' active' : '');
-  allPill.innerHTML =
-    '<span class="pill-icon">🏆</span>' +
-    '<span>Todos</span>' +
-    '<span class="pill-count">' + all.length + '</span>';
-  allPill.onclick = () => setFilter('Todos');
-  bar.appendChild(allPill);
-
-  // Separator
   const sep = document.createElement('div');
-  sep.style.cssText = 'width:1px;height:28px;background:rgba(255,255,255,0.15);flex-shrink:0;margin:0 4px;';
-  bar.appendChild(sep);
+  sep.className = 'menu-sep';
+  list.appendChild(sep);
 
-  // Dept pills
   depts.forEach(f => {
-    const pill = document.createElement('div');
-    pill.className = 'fpill' + (f === activeFilter ? ' active' : '');
-    pill.innerHTML =
-      '<span class="pill-icon">' + getDeptIcon(f) + '</span>' +
-      '<span>' + f + '</span>' +
-      '<span class="pill-count">' + (counts[f] || 0) + '</span>';
-    pill.onclick = () => setFilter(f);
-    bar.appendChild(pill);
+    const item = document.createElement('div');
+    item.className = 'mitem' + (f===activeFilter?' active':'');
+    item.innerHTML =
+      '<span class="mitem-icon">' + getDeptIcon(f) + '</span>' +
+      '<span class="mitem-label">' + f + '</span>' +
+      '<span class="mitem-count">' + (counts[f]||0) + '</span>';
+    item.onclick = () => { setFilter(f); closeMenu(); };
+    list.appendChild(item);
   });
 }
 
 function setFilter(f){
   activeFilter = f;
-  document.querySelectorAll('.fpill').forEach(p => {
-    // Match by text content (dept name is second span)
-    const label = p.querySelectorAll('span')[1];
+  // Update menu items
+  document.querySelectorAll('.mitem').forEach(item => {
+    const label = item.querySelector('.mitem-label');
     const match = label && (
-      (f === 'Todos' && label.textContent === 'Todos') ||
-      label.textContent === f
+      (f==='Todos' && label.textContent==='Todos') ||
+      label.textContent===f
     );
-    p.classList.toggle('active', !!match);
+    item.classList.toggle('active', !!match);
+    const count = item.querySelector('.mitem-count');
+    // count style handled by CSS .active
   });
-
-  filtered = f === 'Todos' ? [...all] : all.filter(p => p.departamento === f);
+  // Update badge
+  const badge = document.getElementById('menu-badge');
+  if(badge){
+    if(f==='Todos'){
+      badge.style.display='none';
+    } else {
+      badge.textContent = f.substring(0,6);
+      badge.style.display='block';
+    }
+  }
+  filtered = f==='Todos' ? [...all] : all.filter(p=>p.departamento===f);
   cur = 0;
   render();
 }
